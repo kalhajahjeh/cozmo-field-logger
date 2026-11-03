@@ -1,6 +1,6 @@
 // App-shell service worker (APP_SPEC §1): the app opens with no network.
 // Bump CACHE on every deploy that changes a shell file.
-var CACHE = 'cfl-shell-v0.1.0';
+var CACHE = 'cfl-shell-v0.2.0';
 var SHELL = [
   './',
   'index.html',

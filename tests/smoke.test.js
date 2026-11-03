@@ -49,7 +49,8 @@ async function tap(page, sel) { await page.locator(sel).first().click(); await p
   await page.waitForSelector('#in-observer');
   await page.evaluate(() => navigator.serviceWorker.ready);
   check(await page.locator('[data-action="start-session"]').isDisabled(), 'start disabled until name + station');
-  check(await page.locator('[data-arg="Checkout service"]').isDisabled(), 'checkout modes disabled in Session 1');
+  check(!(await page.locator('[data-arg="Checkout service"]').isDisabled()) &&
+    !(await page.locator('[data-arg="Checkout arrivals"]').isDisabled()), 'checkout modes enabled (v0.2.0)');
   await page.fill('#in-observer', 'Tester');
   await tap(page, '[data-arg="Deli"]');
   await page.fill('[data-emp="0"]', 'red cap, left scale');
@@ -104,7 +105,7 @@ async function tap(page, sel) { await page.locator(sel).first().click(); await p
   check(await page2.locator('.card').count() === 1 && await page2.locator('.card.next[data-seq="4"]').count() === 1, 'open cards + NEXT restored');
   check(await page2.locator('.dot.bad').count() === 1, 'red dot while offline');
   await tap(page2, '[data-action="arrival"]');
-  check(await page2.locator('[data-action="arrival"] .sub').textContent() === 'Customer #6', 'customer numbering continues');
+  check((await page2.locator('[data-action="arrival"] .sub').textContent()).startsWith('Customer #6 '), 'customer numbering continues');
 
   console.log('End session + CSV');
   await tap(page2, '[data-action="end-session-ask"]');

@@ -193,3 +193,79 @@ input[type="text"]:focus { border-width: 3px; padding: 0 11px; }
 .kv b { font-size: 20px; font-weight: 800; }
 .err { padding: 12px; font-weight: 700; border: 2px solid var(--red); margin: 12px; }
 .note { padding: 12px; font-size: 17px; font-weight: 500; }
+
+/* ================= v0.2.0 additions ================= */
+.ver { font-size: 17px; font-weight: 800; border: 2px solid var(--ink); padding: 2px 8px; }
+.hint { margin-top: 8px; font-size: 15px; }
+
+/* setup + lanes overlay: lane number grid */
+.lanepick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.overlay .lanepick { padding: 0 16px 16px; }
+
+/* tools band: Undo · Edit time · Snapshot · End */
+.band.tools { gap: 6px; padding: 6px 8px; }
+.band.tools .btn { flex: 1 1 0; min-width: 0; font-size: 15px; padding: 2px 4px; letter-spacing: 0; }
+.band.tools .btn.undo { flex: 1.5 1 0; }
+.band.tools .btn.snap { flex: 1.3 1 0; }
+.band.tools .btn.endb { flex: 0.8 1 0; }
+.badge { display: block; background: var(--ink); color: #ffffff; font-size: 13px; font-weight: 800; letter-spacing: .08em; padding: 1px 6px; margin-top: 3px; }
+
+/* card timer is a button: tap it to edit that time */
+.timer { margin-left: auto; display: flex; align-items: baseline; gap: 6px; background: transparent; border: 2px solid var(--ink); padding: 6px 8px; min-height: 48px; align-items: center; color: var(--ink); }
+
+/* toast: fixed, never shifts layout, never blocks taps */
+.toast { position: fixed; left: 0; right: 0; top: var(--safe-t); height: 44px; z-index: 20; pointer-events: none; background: var(--ink); color: #ffffff; font-size: 17px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+.tip { display: flex; gap: 8px; align-items: center; padding: 8px 12px; border-bottom: 2px solid var(--ink); font-size: 15px; }
+.tip > span { flex: 1; }
+
+/* checkout service: two lane columns */
+.cols { display: flex; min-height: 100%; }
+.lanecol { flex: 1 1 0; min-width: 0; padding: 0 4px; }
+.lanecol + .lanecol { border-left: 1px solid var(--ink); }
+.colhead { display: flex; justify-content: space-between; align-items: center; min-height: 40px; font-weight: 800; font-size: 20px; border-bottom: 1px solid var(--hair); }
+.ccard { padding: 8px 0; border-bottom: 1px solid var(--hair); }
+.ccard .card-head { gap: 6px; margin-bottom: 8px; }
+.ccard .timer { padding: 4px 6px; gap: 4px; }
+.ccard .timer .label { display: none; }
+.ccard .timer .t { font-size: 28px; }
+.ccard .row { gap: 4px; }
+.ccard .row + .row { margin-top: 4px; }
+.ccard .btn { padding-left: 1px; padding-right: 1px; font-size: 17px; letter-spacing: 0; }
+.ccard .btn.small { font-size: 13px; }
+.ccard .btn .sub { font-size: 11px; }
+.empty.small { padding: 16px 0; font-size: 15px; }
+.actionbar.split { display: flex; }
+.actionbar.split .primary { flex: 1 1 0; min-width: 0; }
+.actionbar.split .primary + .primary { border-left: 1px solid #3a3940; }
+
+/* checkout arrivals: lane buttons in the thumb zone */
+.binbar .title { font-size: 20px; }
+.lanes-area { display: flex; flex-direction: column; }
+.lanegrid { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #3a3940; padding-bottom: var(--safe-b); }
+.lanebtn { min-height: 112px; background: var(--dark); color: #ffffff; border: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.lanebtn.full { grid-column: 1 / -1; min-height: 96px; }
+.lanebtn .ln { font-size: 22px; font-weight: 800; letter-spacing: .06em; }
+.lanebtn .cnt { font-size: 40px; font-weight: 800; line-height: 1.05; }
+.lanebtn .sub { font-size: 13px; font-weight: 700; }
+.lanebtn.inv { background: #ffffff; color: var(--dark); }
+
+/* edit-a-time overlay */
+.overlay .lrow { width: 100%; min-height: 56px; display: flex; justify-content: space-between; align-items: center; padding: 0 16px; background: transparent; color: #ffffff; border: 0; border-bottom: 1px solid #3a3940; font-size: 19px; font-weight: 700; }
+.overlay .lrow.inv { background: #ffffff; color: var(--dark); }
+.overlay .lrow .tnum { font-size: 24px; }
+.timebox { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-items: baseline; padding: 16px; border-bottom: 1px solid #3a3940; }
+.timebox .label { color: #ffffff; }
+.timebox .was { font-size: 28px; font-weight: 700; }
+.timebox .new { font-size: 44px; font-weight: 800; }
+.overlay .pad { padding: 14px 16px; border-bottom: 1px solid #3a3940; }
+.overlay .pad > .label { display: block; margin-bottom: 8px; color: #ffffff; }
+.overlay input[type="text"] { color: var(--ink); font-size: 24px; }
+.overlay .errtext { padding: 8px 0 0; font-weight: 700; }
+
+/* compact snapshot steppers (checkout: one row per lane) */
+.overlay .stepper.compact { display: flex; align-items: center; gap: 8px; padding: 6px 16px; }
+.overlay .stepper.compact .label { flex: 1; margin: 0; }
+.overlay .stepper.compact .row { flex: 0 0 auto; }
+.overlay .stepper.compact .row > * { flex: 0 0 64px; }
+.overlay .stepper.compact .stepval { font-size: 32px; }
