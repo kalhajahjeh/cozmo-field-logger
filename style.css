@@ -1,0 +1,195 @@
+/* Cozmo Field Logger — APP_SPEC §8 / §8a.
+   Flat, industrial, monochrome. 0 radius, no shadows, no gradients.
+   Colour only for state: amber = snapshot due / pending, green = synced,
+   red = offline or error. */
+
+:root {
+  --bg: #f6f8f7;
+  --ink: #000000;
+  --dark: #0f0e12;
+  --hair: #e5e5e5;
+  --disabled: #b2b2b2;
+  --amber: #f5b800;
+  --green: #1a7f37;
+  --red: #d1242f;
+  --tap: 56px;
+  --primary: 96px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+
+* { box-sizing: border-box; border-radius: 0; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.25;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  overscroll-behavior: none;
+}
+
+body { position: fixed; inset: 0; overflow: hidden; }
+
+button, input { font: inherit; color: inherit; touch-action: manipulation; }
+
+input[type="text"] {
+  -webkit-user-select: text;
+  user-select: text;
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 12px;
+  font-size: 17px;
+  font-weight: 500;
+  background: #ffffff;
+  border: 2px solid var(--ink);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+input[type="text"]:focus { border-width: 3px; padding: 0 11px; }
+
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* ---------- screen frame ---------- */
+#app { position: absolute; inset: 0; display: flex; flex-direction: column; padding-top: var(--safe-t); }
+.scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+
+/* ---------- status bar (44px) ---------- */
+.status {
+  height: 44px; flex: 0 0 44px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--hair);
+}
+.dot { width: 14px; height: 14px; flex: 0 0 14px; background: var(--amber); }
+.dot.ok { background: var(--green); }
+.dot.pending { background: var(--amber); }
+.dot.bad { background: var(--red); }
+.stat { display: flex; flex-direction: column; justify-content: center; line-height: 1; }
+.stat .k { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.stat .v { font-size: 17px; font-weight: 700; margin-top: 3px; }
+.status .elapsed { margin-left: auto; font-size: 32px; font-weight: 700; line-height: 1; }
+
+/* ---------- ruled bands ---------- */
+.band {
+  display: flex; align-items: center; gap: 8px;
+  min-height: var(--tap);
+  padding: 0 12px;
+  border-bottom: 1px solid var(--hair);
+}
+.band .title { font-weight: 700; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.label { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.section { padding: 16px 12px; border-bottom: 1px solid var(--hair); }
+.section > .label { display: block; margin-bottom: 8px; }
+.row { display: flex; gap: 8px; }
+.row + .row { margin-top: 8px; }
+.row > * { flex: 1 1 0; min-width: 0; }
+.stack > * + * { margin-top: 8px; }
+.stack > .btn { width: 100%; }
+.empty { padding: 32px 12px; font-size: 17px; }
+
+/* ---------- buttons ---------- */
+.btn {
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: 4px 8px;
+  background: transparent;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  line-height: 1.1;
+  -webkit-appearance: none; appearance: none;
+}
+.btn .sub { font-size: 12px; font-weight: 700; text-transform: none; letter-spacing: 0; margin-top: 2px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn.fill, .btn.on { background: var(--ink); color: #ffffff; }
+.btn.inv { background: var(--ink) !important; color: #ffffff !important; }
+.btn.fill.inv, .btn.on.inv { background: #ffffff !important; color: var(--ink) !important; }
+.btn:disabled, .btn.disabled { background: var(--disabled); border-color: var(--disabled); color: var(--ink); }
+.btn.amber { background: var(--amber); border-color: var(--ink); color: var(--ink); }
+.btn.slim { flex: 0 0 auto; padding: 4px 14px; }
+.btn.wide { flex: 2 1 0; }
+
+/* ---------- bottom action bar ---------- */
+.actionbar {
+  flex: 0 0 auto;
+  background: var(--dark);
+  padding: 0 0 var(--safe-b) 0;
+}
+.primary {
+  width: 100%;
+  min-height: var(--primary);
+  background: var(--dark);
+  color: #ffffff;
+  border: 0;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.primary .sub { font-size: 13px; font-weight: 700; letter-spacing: .06em; margin-top: 4px; }
+.primary.inv { background: #ffffff; color: var(--dark); }
+.primary:disabled { background: var(--disabled); color: var(--ink); }
+
+/* ---------- customer cards ---------- */
+.card { padding: 12px; border-bottom: 1px solid var(--hair); border: 4px solid transparent; border-bottom: 1px solid var(--hair); }
+.card.next { border: 4px solid var(--ink); }
+.card-head { display: flex; align-items: center; gap: 10px; min-height: 40px; margin-bottom: 10px; }
+.cnum { font-size: 28px; font-weight: 800; line-height: 1; }
+.tag { background: var(--ink); color: #ffffff; font-size: 13px; font-weight: 800; letter-spacing: .08em; padding: 4px 6px; }
+.emp { font-size: 17px; font-weight: 700; border: 2px solid var(--ink); padding: 2px 6px; }
+.timer { margin-left: auto; display: flex; align-items: baseline; gap: 6px; }
+.timer .label { font-size: 12px; }
+.timer .t { font-size: 32px; font-weight: 700; line-height: 1; }
+.card .row .btn { padding-left: 2px; padding-right: 2px; font-size: 16px; letter-spacing: 0; }
+.card .row .btn.wide { flex: 1.3 1 0; }
+.stepval { display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; min-height: var(--tap); }
+
+/* ---------- overlays ---------- */
+.overlay {
+  position: fixed; inset: 0; z-index: 10;
+  background: var(--dark); color: #ffffff;
+  display: flex; flex-direction: column;
+  padding-top: var(--safe-t);
+}
+.overlay .alarm {
+  background: var(--amber); color: var(--ink);
+  min-height: 96px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 32px; font-weight: 800; letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.overlay .alarm .sub { font-size: 17px; font-weight: 700; letter-spacing: .02em; text-transform: none; margin-top: 4px; }
+.overlay .head { min-height: 64px; display: flex; align-items: center; padding: 0 16px; font-size: 24px; font-weight: 800; border-bottom: 1px solid #3a3940; }
+.overlay .body { flex: 1; overflow-y: auto; }
+.overlay .stepper { padding: 14px 16px; border-bottom: 1px solid #3a3940; }
+.overlay .stepper .label { display: block; margin-bottom: 8px; color: #ffffff; font-size: 15px; }
+.overlay .btn { border-color: #ffffff; color: #ffffff; }
+.overlay .btn.fill { background: #ffffff; color: var(--dark); }
+.overlay .btn.inv { background: #ffffff !important; color: var(--dark) !important; }
+.overlay .btn.fill.inv { background: var(--dark) !important; color: #ffffff !important; }
+.overlay .btn:disabled { background: var(--disabled); border-color: var(--disabled); color: var(--ink); }
+.overlay .stepval { font-size: 40px; }
+.overlay .foot { padding: 12px 16px calc(12px + var(--safe-b)); border-top: 1px solid #3a3940; }
+.overlay .foot .btn { min-height: 80px; font-size: 22px; }
+.overlay p { padding: 16px; font-size: 17px; }
+
+/* ---------- summary ---------- */
+.kv { display: flex; justify-content: space-between; align-items: center; min-height: 44px; padding: 0 12px; border-bottom: 1px solid var(--hair); font-size: 17px; }
+.kv b { font-size: 20px; font-weight: 800; }
+.err { padding: 12px; font-weight: 700; border: 2px solid var(--red); margin: 12px; }
+.note { padding: 12px; font-size: 17px; font-weight: 500; }
